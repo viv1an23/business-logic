@@ -23,8 +23,8 @@
     <script src="{{ asset('assets/global_assets/js/plugins/buttton/ladda.min.js') }}"></script>
 </head>
 <body>
-{% if app.user %}
 
+{% if app.user %}
         {% include 'helper/navbar.html.twig' %}
         <div class="page-content">
 
@@ -43,14 +43,9 @@
                 </div>
             </div>
         </div>
-
-{#        <script src="{{ path('cp_javascript_admin') }}"></script>#}
-{#        <script src="{{ path('cp_javascript_billing_currencies') }}"></script>#}
-
         <script src="{{ asset('assets/js/custom.js') }}"></script>
         {% block javascripts %}
         {% endblock %}
-{#    {% endif %}#}
 {% else %}
     {% block logincontent %}
     {% endblock %}
