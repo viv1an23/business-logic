@@ -1,0 +1,31 @@
+<div class="page-header page-header-light shadow">
+    <div class="page-header-content d-lg-flex border-top">
+        <div class="d-flex">
+            {% if breadcrumbs is defined %}
+                <ol class="breadcrumb py-2">
+                    {% for breadcrumb in breadcrumbs %}
+                        {% if breadcrumb.link is defined %}
+                            <li class="breadcrumb-item"><a href="{{ breadcrumb.link }}">{{ breadcrumb.title }}</a></li>
+                        {% else %}
+                            <li class="breadcrumb-item active">{{ breadcrumb.title }}</li>
+                        {% endif %}
+                    {% endfor  %}
+                </ol>
+            {% endif %}
+        </div>
+
+        <div class="d-lg-block ms-lg-auto" id="breadcrumb_elements">
+            {% if actions is defined %}
+                <div class="breadcrumb-line header-elements-md-inline bg-transparent">
+                    <div class="text-end mt-1 mb-1">
+                        {% for action in actions %}
+                            <a href="{{ action.link }}" class="btn btn-primary">
+                                {{ action.title }}
+                            </a>
+                        {% endfor %}
+                    </div><!-- /.page-title-actions -->
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

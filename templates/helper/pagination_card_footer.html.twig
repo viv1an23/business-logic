@@ -1,0 +1,27 @@
+<div class="card-footer d-sm-flex justify-content-sm-between align-items-sm-center py-sm-2">
+
+    {{ knp_pagination_render(knp_result_set) }}
+
+    <span>Total Results : {{ knp_result_set.getTotalItemCount }}</span>
+
+    {% if pagination_disallow_dynamic_page_size is not defined or pagination_disallow_dynamic_page_size == false %}
+    <div class="row">
+        <div class="col-md-12 input-group">
+            <form action="{{ app.request.uri }}" method="get">
+                <input type="hidden" name="page" value="1" />
+                {% if app.request.query.get('sort') is not empty %}
+                    <input type="hidden" name="sort" value="{{ app.request.query.get('sort') }}"/>
+                    <input type="hidden" name="direction" value="{{ app.request.query.get('direction') }}"/>
+                {% endif %}
+                <select name="numberOfRecords" onchange="this.form.submit()" class="select custom-select-sm">
+                    <option value="10" {% if numberOfRecords == 10 %} selected {% endif %}>10</option>
+                    <option value="25" {% if numberOfRecords == 25 %} selected {% endif %}>25</option>
+                    <option value="50" {% if numberOfRecords == 50 %} selected {% endif %}>50</option>
+                    <option value="100" {% if numberOfRecords == 100 %} selected {% endif %}>100</option>
+                    <option value="1000" {% if numberOfRecords == 1000 %} selected {% endif %}>1000</option>
+                </select>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>

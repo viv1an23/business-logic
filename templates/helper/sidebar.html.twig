@@ -1,0 +1,26 @@
+{% set sidebarStyle =  app.request.cookies.get('sidebarStyle') %}
+    <!-- Main sidebar -->
+    <div class="sidebar sidebar-dark sidebar-main sidebar-expand-lg {% if sidebarStyle != null  %} sidebar-main-resized {% endif %}">
+        <!-- Sidebar content -->
+        <div class="sidebar-content">
+            <!-- Sidebar header -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-body">
+                    <div class="media d-flex justify-content-between">
+                        <h5 class="sidebar-resize-hide flex-grow-1 my-auto text-nowrap text-center">{{ app.user.email    }}</h5>
+
+                        <div>
+                            <button type="button" class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-control sidebar-main-resize d-none d-lg-inline-flex">
+                                <i class="ph-arrows-left-right"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-lg-none">
+                                <i class="ph-x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include 'helper/sidebar_navigation.html.twig' %}
+        </div>
+    </div>

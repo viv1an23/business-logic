@@ -1,19 +1,59 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link href="{{ asset('assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom.css') }}">
+    <script src="{{ asset('assets/js/theme_switcher.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 
+    <script src="{{ asset('assets/js/vendor/visualization/d3/d3.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/visualization/d3/d3_tooltip.js') }}"></script>
+
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/global_assets/js/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/global_assets/js/plugins/visualization/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
+    <script src="{{ asset('assets/js/custom_jquery.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/form/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/global_assets/js/plugins/buttton/spin.min.js') }}"></script>
+    <script src="{{ asset('assets/global_assets/js/plugins/buttton/ladda.min.js') }}"></script>
+</head>
+<body>
+{% if app.user %}
+
+        {% include 'helper/navbar.html.twig' %}
+        <div class="page-content">
+
+            {% include 'helper/sidebar.html.twig' %}
+            <div class="content-wrapper dashboard-content">
+                <div class="content-inner">
+                    {% include 'helper/page_header.html.twig' %}
+                    <div class="content">
+                        {% if tab is not defined %}
+                            {% include 'helper/messages.html.twig' %}
+                        {% endif %}
+                        {% block content %}
+
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{#        <script src="{{ path('cp_javascript_admin') }}"></script>#}
+{#        <script src="{{ path('cp_javascript_billing_currencies') }}"></script>#}
+
+        <script src="{{ asset('assets/js/custom.js') }}"></script>
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
         {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+{#    {% endif %}#}
+{% else %}
+    {% block logincontent %}
+    {% endblock %}
+{% endif %}
+</body>
 </html>
