@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{#{% set active = 'cp_leagues' %}#}
+{#{% block title %} {{ tab|capitalize }} | {{ league.name }} | Leagues | Poolnament {% endblock %}#}
+{#{% set breadcrumbs = [#}
+{#    {#}
+{#        'link': path('cp_dashboard'), 'title': 'Home',#}
+{#    },#}
+{#    {#}
+{#        'link': path('cp_leagues'),#}
+{#        'title': 'Leagues'#}
+{#    },#}
+{#    {#}
+{#        'title': league.name#}
+{#    },#}
+{#    {#}
+{#        'title': tab|capitalize#}
+{#    }#}
+{#] %}#}
+{% block content %}
+    <a href="{{ path('app_buy_player',{ id: team.id }) }}" class=" btn btn-primary mb-3" >Buy Player</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-light d-sm-flex pt-sm-0 pb-0">
+                    <h6 class="align-self-sm-center mb-sm-0 ">
+                        #{{ team.id }} - {{ team.name }}
+                    </h6>
+
+                    <div class="ms-sm-auto">
+                        <ul class="nav nav-tabs nav-tabs-highlight card-header-tabs mb-0">
+                            <li class="nav-item"><a href="{{ path('app_sell_player',{ id: team.id }) }}" class="nav-link {% if tab=='sell_player' %} active {% endif %}" >Players</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    {% include 'helper/messages.html.twig' %}
+                    <div class="tab-content">
+
+                        {% if tab=='sell_player' %}
+                            <div class="tab-pane fade active show" id="player">
+                                {{ include('teams/player/sell_player.html.twig') }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
