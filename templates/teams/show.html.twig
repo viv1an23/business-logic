@@ -1,23 +1,6 @@
 {% extends 'base.html.twig' %}
 {% set active = 'team' %}
 
-{#{% set active = 'cp_leagues' %}#}
-{#{% block title %} {{ tab|capitalize }} | {{ league.name }} | Leagues | Poolnament {% endblock %}#}
-{#{% set breadcrumbs = [#}
-{#    {#}
-{#        'link': path('cp_dashboard'), 'title': 'Home',#}
-{#    },#}
-{#    {#}
-{#        'link': path('cp_leagues'),#}
-{#        'title': 'Leagues'#}
-{#    },#}
-{#    {#}
-{#        'title': league.name#}
-{#    },#}
-{#    {#}
-{#        'title': tab|capitalize#}
-{#    }#}
-{#] %}#}
 {% block content %}
     <a href="{{ path('app_buy_player',{ id: team.id }) }}" class=" btn btn-primary mb-3" >Buy Player</a>
     <div class="row">

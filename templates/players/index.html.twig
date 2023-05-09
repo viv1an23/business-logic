@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% set active = 'player' %}
 {% block title %} Player {% endblock %}
+
 {% block content %}
     <a href="{{ path('app_player_action') }}" class="mb-3 btn btn-primary" data-bs-popup="tooltip" data-bs-original-title="Add Team">Add Players</a>
     <div class="card">
@@ -32,9 +33,3 @@
     </div>
 {% endblock %}
 
-{#{% block javascripts %}#}
-{#    <script>#}
-{#        var delete_game_url = "{{path("cp_game_delete", {'id': "__game_id__"})}}";#}
-{#    </script>#}
-{#    <script src="{{ asset('assets/js/delete_game.js') }}"></script>#}
-{#{% endblock  %}#}

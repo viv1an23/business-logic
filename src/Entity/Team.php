@@ -13,35 +13,35 @@ class Team
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 50)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(length: 70)]
-    private ?string $country = null;
+    private string $country;
 
-    #[ORM\Column]
-    private ?int $moneyBalance = null;
+    #[ORM\Column(nullable: false)]
+    private int $moneyBalance;
 
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: Player::class)]
     private Collection $players;
 
     #[ORM\OneToMany(mappedBy: 'buyer', targetEntity: Transaction::class)]
     private Collection $transactions;
-    
+
     public function __construct()
     {
         $this->players = new ArrayCollection();
         $this->transactions = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -53,7 +53,7 @@ class Team
         return $this;
     }
 
-    public function getCountry(): ?string
+    public function getCountry(): string
     {
         return $this->country;
     }
@@ -65,7 +65,7 @@ class Team
         return $this;
     }
 
-    public function getMoneyBalance(): ?int
+    public function getMoneyBalance(): int
     {
         return $this->moneyBalance;
     }
@@ -73,7 +73,6 @@ class Team
     public function setMoneyBalance(int $moneyBalance): self
     {
         $this->moneyBalance = $moneyBalance;
-
         return $this;
     }
 

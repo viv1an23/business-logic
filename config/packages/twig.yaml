@@ -2,7 +2,6 @@ twig:
     # default_path: '%kernel.project_dir%/templates'
     form_themes:
         - form/bootstrap.html.twig
-        - form/collection.html.twig
 
     paths:
         "%kernel.project_dir%/public/assets": public_assets

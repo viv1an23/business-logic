@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Entity\Player;
@@ -8,22 +9,25 @@ use App\Repository\TeamRepository;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class TransactionHelper{
+class TransactionHelper
+{
     public function __construct(
         private readonly PlayerRepository $playerRepository,
         private readonly TeamRepository $teamRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly TransactionRepository $transactionRepository){
-
+        private readonly TransactionRepository $transactionRepository
+    ) {
     }
 
     public function buyPlayer($player, $team): bool
     {
         /** @var Player $player */
-        $price = $player->isIsAvailableForSell() && $player->getSellingPrice() != null ? $player->getSellingPrice() : $player->getPrice();
+        $price = $player->isIsAvailableForSell() &&
+        $player->getSellingPrice() != null ? $player->getSellingPrice() : $player->getPrice();
         if ($price <= $team->getMoneyBalance()) {
             if ($player->isIsAvailableForSell()) {
-                $player->getTeam()->setMoneyBalance($player->getTeam()->getMoneyBalance() + $player->getSellingPrice());
+                $player->getTeam()?->setMoneyBalance($player->getTeam()?->getMoneyBalance() +
+                    $player->getSellingPrice());
             }
             $this->transactionLog($team, $player, $price);
             $player->setTeam($team);

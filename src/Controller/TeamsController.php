@@ -18,16 +18,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
+
 use function Symfony\Component\Translation\t;
 
 class TeamsController extends AbstractController
 {
     public function __construct(
-        private readonly PlayerRepository       $playerRepository,
-        private readonly TeamRepository         $teamRepository,
+        private readonly PlayerRepository $playerRepository,
+        private readonly TeamRepository $teamRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly TransactionHelper      $transactionHelper){
-
+        private readonly TransactionHelper $transactionHelper
+    ) {
     }
     #[Route('/teams', name: 'app_teams')]
     public function index(Request $request, PaginatorInterface $paginator): Response
@@ -81,11 +82,11 @@ class TeamsController extends AbstractController
     #[ParamConverter('player', options: ['id' => 'pId'])]
     public function buyPlayer(Request $request, Team $team, Player $player = null): Response
     {
-        if ($player != null){
-            if (!$this->transactionHelper->buyPlayer($player, $team)){
+        if ($player != null) {
+            if (!$this->transactionHelper->buyPlayer($player, $team)) {
                 $this->addFlash('danger', "can't Buy Player, Money Balance Is Less");
             }
-            return $this->redirectToRoute('team_players',['id' => $team->getId()]);
+            return $this->redirectToRoute('team_players', ['id' => $team->getId()]);
         }
 
         $players = $this->playerRepository->createQueryBuilder('pr')
@@ -108,13 +109,14 @@ class TeamsController extends AbstractController
 
         if ($form->isSubmitted()) {
             try {
-                $player->setSellingPrice($request->get('sell_players')['sellingPrice']);
-                $player->setIsAvailableForSell(1);
+                $player->setIsAvailableForSell(true);
                 $this->playerRepository->save($player, true);
             } catch (Throwable $throwable) {
                 dd($throwable->getMessage());
             }
-            return $this->redirectToRoute('team_players',['id' => $player->getTeam()->getId()]);
+            return $this->redirectToRoute('team_players', [
+                'id' => $player->getTeam()?->getId()
+            ]);
         }
 
         return $this->render('teams/player/sell_player.html.twig', [
@@ -126,7 +128,7 @@ class TeamsController extends AbstractController
     public function delete(Team $team): Response
     {
         $players = $this->playerRepository->findBy(['team' => $team]);
-        foreach ($players as $player){
+        foreach ($players as $player) {
             $player->setTeam(null);
             $this->entityManager->persist($player);
         }
