@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Player;
 use App\Entity\Team;
-use App\Form\AddPlayersType;
 use App\Form\SellPlayersType;
 use App\Form\TeamType;
 use App\Repository\PlayerRepository;
@@ -18,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
-use function Symfony\Component\Translation\t;
 
 class TeamsController extends AbstractController
 {
