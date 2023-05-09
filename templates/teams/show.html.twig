@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% set active = 'team' %}
 
 {#{% set active = 'cp_leagues' %}#}
 {#{% block title %} {{ tab|capitalize }} | {{ league.name }} | Leagues | Poolnament {% endblock %}#}
@@ -29,7 +30,7 @@
 
                     <div class="ms-sm-auto">
                         <ul class="nav nav-tabs nav-tabs-highlight card-header-tabs mb-0">
-                            <li class="nav-item"><a href="{{ path('app_sell_player',{ id: team.id }) }}" class="nav-link {% if tab=='sell_player' %} active {% endif %}" >Players</a></li>
+                            <li class="nav-item"><a href="{{ path('team_players',{ id: team.id }) }}" class="nav-link {% if tab=='sell_player' %} active {% endif %}" >Players</a></li>
                         </ul>
                     </div>
                 </div>
@@ -39,7 +40,7 @@
 
                         {% if tab=='sell_player' %}
                             <div class="tab-pane fade active show" id="player">
-                                {{ include('teams/player/sell_player.html.twig') }}
+                                {{ include('teams/player/index.html.twig') }}
                             </div>
                         {% endif %}
                     </div>

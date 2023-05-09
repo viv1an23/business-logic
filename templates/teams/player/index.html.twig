@@ -1,0 +1,42 @@
+<div class="card m-0 p-0">
+    <div class="table-responsive">
+        <div class="card-header">
+            <h5 class="p-0 m-0">
+                Players
+            </h5>
+        </div>
+        <table class="table table-striped table-xs">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Buy Price</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for player in players %}
+                <tr>
+                    <td>{{ player.id }}</td>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.surname }}</td>
+                    <td>{{ player.price }}</td>
+                    <td>
+                        {% if player.IsAvailableForSell == 0 %}
+                            <a href="{{ path('app_sell_player', {id: player.id}) }}" class="m-lg-2 btn btn-indigo"
+                               data-bs-popup="tooltip" data-bs-original-title="Sell Player">Sell</a>
+                        {% else %}
+                            Player On Sale
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No Records Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -5,23 +5,28 @@ namespace App\Controller;
 use App\Entity\Player;
 use App\Entity\Team;
 use App\Form\AddPlayersType;
+use App\Form\SellPlayersType;
 use App\Form\TeamType;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
+use App\Service\TransactionHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
+use function Symfony\Component\Translation\t;
 
 class TeamsController extends AbstractController
 {
     public function __construct(
-        private readonly PlayerRepository $playerRepository,
-        private readonly TeamRepository $teamRepository,
-        private readonly EntityManagerInterface $entityManager){
+        private readonly PlayerRepository       $playerRepository,
+        private readonly TeamRepository         $teamRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly TransactionHelper      $transactionHelper){
 
     }
     #[Route('/teams', name: 'app_teams')]
@@ -57,8 +62,8 @@ class TeamsController extends AbstractController
         ]);
     }
 
-    #[Route('/teams/sell/{id?}', name: 'app_sell_player')]
-    public function sellPlayer(Team $team): Response
+    #[Route('/teams/{id?}/players', name: 'team_players')]
+    public function teamPlayer(Team $team): Response
     {
 
         $players = $this->playerRepository->findBy(
@@ -72,38 +77,61 @@ class TeamsController extends AbstractController
         ]);
     }
 
-    #[Route('/teams/buy/{id?}', name: 'app_buy_player')]
-    public function buyPlayer(Request $request, Team $team): Response
+    #[Route('/teams/buy/{id}/{pId?}', name: 'app_buy_player')]
+    #[ParamConverter('player', options: ['id' => 'pId'])]
+    public function buyPlayer(Request $request, Team $team, Player $player = null): Response
     {
-        $form = $this->createForm(AddPlayersType::class);
+        if ($player != null){
+            if (!$this->transactionHelper->buyPlayer($player, $team)){
+                $this->addFlash('danger', "can't Buy Player, Money Balance Is Less");
+            }
+            return $this->redirectToRoute('team_players',['id' => $team->getId()]);
+        }
 
+        $players = $this->playerRepository->createQueryBuilder('pr')
+                    ->where('pr.team IS NULL')
+                    ->orWhere('pr.IsAvailableForSell != :IsAvailableForSell')
+                    ->setParameter('IsAvailableForSell', false)->getQuery()->getArrayResult();
+
+        return $this->render('teams/player/buy_player.html.twig', [
+            'teamId' => $team->getId(),
+            'players' => $players
+        ]);
+    }
+
+    #[Route('/teams/sell/{id}', name: 'app_sell_player')]
+    public function sellPlayer(Request $request, Player $player): Response
+    {
+        $player->setSellingPrice($player->getPrice());
+        $form = $this->createForm(SellPlayersType::class, $player);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             try {
-
-                $players = $form->get('players')->getData();
-                /** @var Player $player*/
-                foreach ($players as $player) {
-                    if ($player->getPrice() <= $team->getMoneyBalance()){
-                        $player->setTeam($team);
-                        $team->setMoneyBalance($team->getMoneyBalance() - $player->getPrice());
-                        $this->entityManager->persist($player);
-                        $this->entityManager->persist($team);
-                    } else{
-                        $this->addFlash('danger', "Can't Buy Player, Money Balance Is Less");
-                    }
-                }
-                $this->entityManager->flush();
+                $player->setSellingPrice($request->get('sell_players')['sellingPrice']);
+                $player->setIsAvailableForSell(1);
+                $this->playerRepository->save($player, true);
             } catch (Throwable $throwable) {
-                $this->addFlash('danger', "can't Buy Player, Money Balance Is Less");
+                dd($throwable->getMessage());
             }
-            return $this->redirectToRoute('app_sell_player', ['id' => $team->getId()]);
+            return $this->redirectToRoute('team_players',['id' => $player->getTeam()->getId()]);
         }
 
-
-        return $this->render('teams/player/buy_player.html.twig', [
+        return $this->render('teams/player/sell_player.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/teams/delete/{id}', name: 'app_team_delete')]
+    public function delete(Team $team): Response
+    {
+        $players = $this->playerRepository->findBy(['team' => $team]);
+        foreach ($players as $player){
+            $player->setTeam(null);
+            $this->entityManager->persist($player);
+        }
+        $this->entityManager->flush();
+        $this->teamRepository->remove($team, true);
+        return $this->redirectToRoute('app_teams');
     }
 }

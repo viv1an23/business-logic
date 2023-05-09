@@ -5,9 +5,15 @@
             <i class="ph-dots-three sidebar-resize-show"></i>
         </li>
         <li class="nav-item">
-            <a href="{{path('app_teams')}}" class="nav-link active">
+            <a href="{{path('app_teams')}}" class="nav-link {{ active == 'team' ? 'active' : ''}}">
                 <i class="ph-users-three"></i>
                 <span>Teams</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{path('app_player')}}" class="nav-link {{ active == 'player' ? 'active' : ''}}">
+                <i class="ph-users-three"></i>
+                <span>Player</span>
             </a>
         </li>
     </ul>

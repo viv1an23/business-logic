@@ -8,14 +8,11 @@
             <a href="{{ path('app_team_action', {id: team.id}) }}" class="m-lg-2 btn btn-primary"
                data-bs-popup="tooltip" data-bs-original-title="Add Team">Update Team</a>
 
-            <a href="{{ path('app_sell_player', {id: team.id}) }}" class="m-lg-2 btn btn-primary" data-bs-popup="tooltip"
+            <a href="{{ path('team_players', {id: team.id}) }}" class="m-lg-2 btn btn-primary" data-bs-popup="tooltip"
                data-bs-original-title="Player">Players</a>
 
-            <a href="{{ path('app_team_action') }}" class="m-lg-2 btn btn-primary" data-bs-popup="tooltip"
-               data-bs-original-title="Add Team">Add Team</a>
-
-            <a href="{{ path('app_team_action') }}" class="m-lg-2 btn btn-primary" data-bs-popup="tooltip"
-               data-bs-original-title="Add Team">Add Team</a>
+            <button onclick="if (confirm('Sure Want To Delete Team')){ window.location.href = '{{ path('app_team_delete', {id: team.id})  }}' }" class="m-lg-2 btn btn-danger"
+                    data-bs-popup="tooltip" data-bs-original-title="Delete Team">Delete</button>
         </div>
     </td>
 </tr>

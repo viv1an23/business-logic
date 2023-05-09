@@ -1,0 +1,17 @@
+<tr>
+    <td>{{ player.id }}</td>
+    <td>{{ player.team ? player.team.name : '-' }}</td>
+    <td>{{ player.name }}</td>
+    <td>{{ player.surname }}</td>
+    <td>{{ player.price }}</td>
+    <td>{{ player.IsAvailableForSell ? player.sellingPrice != 0 ? player.sellingPrice : '-' : '-'}}</td>
+    <td>
+        <div class="d-flex">
+            <a href="{{ path('app_player_action', {id: player.id}) }}" class="m-lg-2 btn btn-primary" data-bs-popup="tooltip"
+               data-bs-original-title="Update Player">Update</a>
+
+            <button onclick="if (confirm('Sure Want To Delete Player')){ window.location.href = '{{ path('app_player_delete', {id: player.id})  }}' }" class="m-lg-2 btn btn-danger"
+                    data-bs-popup="tooltip" data-bs-original-title="Delete Player">Delete</button>
+        </div>
+    </td>
+</tr>

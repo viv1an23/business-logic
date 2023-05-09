@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% set active = 'player' %}
+{% block title %} Player {% endblock %}
+{% block content %}
+    <a href="{{ path('app_player_action') }}" class="mb-3 btn btn-primary" data-bs-popup="tooltip" data-bs-original-title="Add Team">Add Players</a>
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>{{ knp_pagination_sortable(players, 'Id', 'id') }}</th>
+                    <th>{{ knp_pagination_sortable(players, 'Team', 'team') }}</th>
+                    <th>{{ knp_pagination_sortable(players, 'Name', 'name') }}</th>
+                    <th>{{ knp_pagination_sortable(players, 'Surname', 'surname') }}</th>
+                    <th>{{ knp_pagination_sortable(players, 'Price', 'price') }}</th>
+                    <th>{{ knp_pagination_sortable(players, 'On Sale', '') }}</th>
+                    <th class="table-actions" colspan="5">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for player in players %}
+                    {% include 'players/row.html.twig' %}
+                {% else %}
+                    <tr class="w-100">
+                        <td class="border-none" colspan="8">No Records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ include('paginator/pagination_card_footer.html.twig', {'knp_result_set': players}) }}
+    </div>
+{% endblock %}
+
+{#{% block javascripts %}#}
+{#    <script>#}
+{#        var delete_game_url = "{{path("cp_game_delete", {'id': "__game_id__"})}}";#}
+{#    </script>#}
+{#    <script src="{{ asset('assets/js/delete_game.js') }}"></script>#}
+{#{% endblock  %}#}
