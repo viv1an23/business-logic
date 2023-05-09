@@ -27,7 +27,8 @@
                             <a href="{{ path('app_sell_player', {id: player.id}) }}" class="m-lg-2 btn btn-indigo"
                                data-bs-popup="tooltip" data-bs-original-title="Sell Player">Sell</a>
                         {% else %}
-                            Player On Sale
+                            <a href="{{ path('app_cancel_sell_player', {id: player.id}) }}" class="m-lg-2 btn btn-danger"
+                               data-bs-popup="tooltip" data-bs-original-title="Sell Player">Cancel Sell</a>
                         {% endif %}
                     </td>
                 </tr>

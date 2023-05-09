@@ -15,8 +15,8 @@ PHP 8.2
      -> php bin/console doctrine:migrations:migrate
      -> php bin/console doctrine:fixtures:load
      -> symfony serve
-4) Then go to url -- http://127.0.0.1:8000/login (admin@admin.com / qqqwww)
-5) Run - php bin/console doctrine:migration:migrate
+4) Then go to url -- http://127.0.0.1:8000/login
+5) Username = admin@admin.com , password = qqqwww for login
 
 ####
 

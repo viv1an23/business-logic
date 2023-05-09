@@ -121,6 +121,15 @@ class TeamsController extends AbstractController
         ]);
     }
 
+    #[Route('/teams/sell/cancel/{id}', name: 'app_cancel_sell_player')]
+    public function cancelSellPlayer(Request $request, Player $player): Response
+    {
+        $player->setSellingPrice(null);
+        $player->setIsAvailableForSell(false);
+        $this->playerRepository->save($player, true);
+        return $this->redirectToRoute('team_players', ['id' => $player->getTeam()?->getId()]);
+    }
+
     #[Route('/teams/delete/{id}', name: 'app_team_delete')]
     public function delete(Team $team): Response
     {
